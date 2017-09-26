@@ -4,6 +4,15 @@
 	.garfield{
 		width: 400px;
 		height: 133px;
-		background-image: url(garfield.gif);
+		background: url(garfield.gif);
+	}
+}
+@media screen 
+	and (max-width: 1200px) 
+	and (min-width: 1100px){
+	.garfield{
+		width: 200px;
+		height: 133px;
+		background: url(garfield.gif) 200px 0;
 	}
 }
