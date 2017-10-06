@@ -14,7 +14,18 @@
 <div id="lyrics"></div>
 
 <script>
-	// Complete this section and create a CSS file named style.css
+
+	var video = document.getElementById("a_classic");
+	var lyrics = document.getElementById("lyrics");
+	
+	function writeLyrics() {
+		if (video.currentTime < 5) {
+			lyrics.innerHTML = "<h3>Initial Test</h3>";
+		}
+	}
+
+	video.addEventListener("timeupdate", writeLyrics, false);
+	
 </script>
 </body>
 </html>	
