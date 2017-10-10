@@ -1,22 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
+	
+	<style>
+		#map {
+			height: 100%;
+		}
+		html, body {
+			height: 100%;
+			margin: 0;
+			padding: 0;
+		}
+	</style>
+	
 	<title>Historic Landmarks Map</title>
+	<meta name="viewport" content="initial-scale=1.0" />
+	<script src="https://maps.google.com/maps/api/js?sensor=true"></script>
 	<script type="text/javascript">
 		var login = 'ymOsHX1N';
 		var lng = 0;
 		var lat = 0;
+		var map;
 		function sendLocation(){
 			if (navigator.geolocation){
 				navigator.geolocation.getCurrentPosition(function(position) {
 					lng = position.coords.longitude;
 					lat = position.coords.latitude;
+					alert(lng);
+					initMap();
 				});
 			}
+		}
+		function initMap(){
+			var centerLocation = new google.maps.LatLng(lat, lng);
+			alert(centerLocation);
+			var mapOptions = {
+				zoom: 14,
+				center: centerLocation
+			};
+			map = new google.maps.Map(document.getElementById("map"), mapOptions);
 		}
 	</script>
 </head>
 <body onload="sendLocation()">
-
+	<div id="map"></div>
 </body>
 </html>
