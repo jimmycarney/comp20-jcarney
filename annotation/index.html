@@ -121,8 +121,11 @@
 		else if (video.currentTime > 164 && video.currentTime < 168) {
 			lyrics.innerHTML = "<h5>And put it on his tail</h5>";
 		}
-		else {
+		else if (video.currentTime < 168){
 			lyrics.innerHTML = "<h5>[music]</h5>";
+		}
+		else {
+			lyrics.innerHTML = "";
 		}
 	}
 
