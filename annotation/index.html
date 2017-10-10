@@ -121,6 +121,9 @@
 		else if (video.currentTime > 164 && video.currentTime < 168) {
 			lyrics.innerHTML = "<h5>And put it on his tail</h5>";
 		}
+		else {
+			lyrics.innerHTML = "<h5>[music]</h5>";
+		}
 	}
 
 	video.addEventListener("timeupdate", writeLyrics, false);
