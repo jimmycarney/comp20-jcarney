@@ -2,8 +2,21 @@
 <html>
 <head>
 	<title>Historic Landmarks Map</title>
+	<script type="text/javascript">
+		var login = 'ymOsHX1N';
+		var lng = 0;
+		var lat = 0;
+		function sendLocation(){
+			if (navigator.geolocation){
+				navigator.geolocation.getCurrentPosition(function(position) {
+					lng = position.coords.longitude;
+					lat = position.coords.latitude;
+				});
+			}
+		}
+	</script>
 </head>
-<body>
+<body onload="sendLocation()">
 
 </body>
 </html>
