@@ -1,7 +1,14 @@
 #lyrics{
 	font-style: italic;
 	font-size: 20pt;
+	width: 90%;
+	margin-left: auto;
+	margin-right: auto;
 }
 #lyrics:hover{
 	font-size: 30pt;
+}
+body{
+	background-color: #d3d3d3;
+	text-align: center;
 }
