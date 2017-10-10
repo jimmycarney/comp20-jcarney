@@ -14,6 +14,13 @@
 		var centerLocation;
 		var myMark;
 		var info;
+
+		/* gets current location using navigator.geolocation
+		 * creates new instance of XMLHttpRequest
+		 * sends current location and login data to Ming's server
+		 * gets back all data in "request.responseText"
+		 * calls initMap() now that the current location is stored
+		 */
 		function sendLocation() {
 			if (navigator.geolocation){
 				navigator.geolocation.getCurrentPosition(function(position) {
@@ -32,6 +39,13 @@
 				});
 			}
 		}
+
+		/* sets centerLocation to be coordinates of current location
+		 * sets mapOptions to certain zoom and centerLocation
+		 * creates a new map
+		 * creates a marker for current location
+		 * creates a new info window and calls initInfo
+		 */
 		function initMap() {
 			centerLocation = new google.maps.LatLng(lat, lng);
 			var mapOptions = {
