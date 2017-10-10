@@ -24,13 +24,9 @@
 					request.open("POST", "https://defense-in-derpth.herokuapp.com/sendLocation", true);
 					request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 					request.onreadystatechange = function() {
-						alert(login);
-						alert(lat);
-						alert(lng);
 						alert(request.responseText);
 					};
-					var sendParams = "login=" + login + "&lat=" + lat + "&lng" + lng;
-					alert(sendParams);
+					var sendParams = "login=" + login + "&lat=" + lat + "&lng=" + lng;
 					request.send(sendParams);
 					initMap();
 				});
