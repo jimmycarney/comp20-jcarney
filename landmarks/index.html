@@ -19,6 +19,7 @@
 				navigator.geolocation.getCurrentPosition(function(position) {
 					lng = position.coords.longitude;
 					lat = position.coords.latitude;
+					/*send info using XMLHttpRequest*/
 					initMap();
 				});
 			}
@@ -33,7 +34,9 @@
 			
 			myMark = new google.maps.Marker({
 				position: centerLocation,
-				title: "Jimmy"
+				title: login, 
+				latitude: lat,
+				longitude: lng
 			});
 			myMark.setMap(map);
 
