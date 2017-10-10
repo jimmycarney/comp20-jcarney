@@ -11,24 +11,38 @@
 		var lng = 0;
 		var lat = 0;
 		var map;
-		function sendLocation(){
+		var centerLocation;
+		var myMark;
+		var info;
+		function sendLocation() {
 			if (navigator.geolocation){
 				navigator.geolocation.getCurrentPosition(function(position) {
 					lng = position.coords.longitude;
 					lat = position.coords.latitude;
-					alert(lng);
 					initMap();
 				});
 			}
 		}
-		function initMap(){
-			var centerLocation = new google.maps.LatLng(lat, lng);
-			alert(centerLocation);
+		function initMap() {
+			centerLocation = new google.maps.LatLng(lat, lng);
 			var mapOptions = {
 				zoom: 14,
 				center: centerLocation
 			};
 			map = new google.maps.Map(document.getElementById("map"), mapOptions);
+			
+			myMark = new google.maps.Marker({
+				position: centerLocation,
+				title: "Jimmy"
+			});
+			myMark.setMap(map);
+
+			info = new google.maps.InfoWindow();
+			google.maps.event.addListener(myMark, 'click', initInfo);
+		}
+		function initInfo() {
+			info.setContent(myMark.title);
+			info.open(map, myMark);
 		}
 	</script>
 </head>
