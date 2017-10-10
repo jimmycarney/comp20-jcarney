@@ -1,0 +1,7 @@
+#lyrics{
+	font-style: italic;
+	font-size: 20pt;
+}
+#lyrics:hover{
+	font-size: 30pt;
+}
