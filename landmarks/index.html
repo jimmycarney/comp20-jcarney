@@ -26,12 +26,34 @@
 				navigator.geolocation.getCurrentPosition(function(position) {
 					lng = position.coords.longitude;
 					lat = position.coords.latitude;
+					//initMap();
 					/*send info using XMLHttpRequest*/
 					var request = new XMLHttpRequest();
 					request.open("POST", "https://defense-in-derpth.herokuapp.com/sendLocation", true);
 					request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 					request.onreadystatechange = function() {
-						alert(request.responseText);
+						//will only run once and if the status code indicates successful
+						//retrieval of data
+						if (request.readyState == 4 && request.status == 200) {
+							rawData = request.responseText;
+							data = JSON.parse(rawData);
+							for (var i = 0; i < data.people.length; i ++) {
+								newLoc = new google.maps.LatLng(data.people[i].lat, data.people[i].lng);
+								newMark = new google.maps.Marker({
+									position: newLoc,
+									title: data.people[i].login,
+									latitude: data.people[i].lat,
+									longitude: data.people[i].lng
+								});
+								newMark.setMap(map);
+
+								var info = new google.maps.InfoWindow();
+								google.maps.event.addListener(newMark, 'click', function(){
+									info.setContent(newMark.title);
+									info.open(map, newMark);
+								});
+							}
+						}
 					};
 					var sendParams = "login=" + login + "&lat=" + lat + "&lng=" + lng;
 					request.send(sendParams);
@@ -54,7 +76,7 @@
 			};
 			map = new google.maps.Map(document.getElementById("map"), mapOptions);
 			
-			myMark = new google.maps.Marker({
+			/*myMark = new google.maps.Marker({
 				position: centerLocation,
 				title: login, 
 				latitude: lat,
@@ -63,12 +85,13 @@
 			myMark.setMap(map);
 
 			info = new google.maps.InfoWindow();
-			google.maps.event.addListener(myMark, 'click', initInfo);
+			google.maps.event.addListener(myMark, 'click', initInfo);*/
 		}
-		function initInfo() {
-			info.setContent(myMark.title);
-			info.open(map, myMark);
-		}
+		/*function initInfo(info) {
+			info.setContent(newMark.title);
+			info.open(map, newMark);
+		}*/
+
 	</script>
 </head>
 <body onload="sendLocation()">
