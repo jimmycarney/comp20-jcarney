@@ -5,7 +5,7 @@
 	<meta name="viewport" content="initial-scale=1.0" />
   	<link rel="stylesheet" href="style.css"/>
   	<meta charset="utf-8" />
-	<script src="https://maps.google.com/maps/api/js?sensor=true"></script>
+	<script src="https://maps.google.com/maps/api/js?libraries=geometry&sensor=true"></script>
 	<script type="text/javascript">
 		var login = 'ymOsHX1N';
 		var lng = 0;
@@ -26,6 +26,7 @@
 				navigator.geolocation.getCurrentPosition(function(position) {
 					lng = position.coords.longitude;
 					lat = position.coords.latitude;
+					centerLocation = new google.maps.LatLng(lat, lng);
 					//initMap();
 					/*send info using XMLHttpRequest*/
 					var request = new XMLHttpRequest();
@@ -43,14 +44,15 @@
 									position: newLoc,
 									title: data.people[i].login,
 									latitude: data.people[i].lat,
-									longitude: data.people[i].lng
+									longitude: data.people[i].lng,
+									distance: google.maps.geometry.spherical.computeDistanceBetween(newLoc, centerLocation, 3963.19)
 								});
 								newMark.setMap(map);
 
 								var info = new google.maps.InfoWindow();
 								google.maps.event.addListener(newMark, 'click', function(){
-									info.setContent(newMark.title);
-									info.open(map, newMark);
+									info.setContent(this.title + '<br>' + this.distance);
+									info.open(map, this);
 								});
 							}
 						}
@@ -69,7 +71,7 @@
 		 * creates a new info window and calls initInfo
 		 */
 		function initMap() {
-			centerLocation = new google.maps.LatLng(lat, lng);
+			//centerLocation = new google.maps.LatLng(lat, lng);
 			var mapOptions = {
 				zoom: 14,
 				center: centerLocation
