@@ -66,7 +66,11 @@
 									details: data.landmarks[i].properties.Details,
 									distance: google.maps.geometry.spherical.computeDistanceBetween(newLoc, centerLocation, 3963.19)
 								});
-								newMark.setMap(map);
+								
+								var distance = google.maps.geometry.spherical.computeDistanceBetween(newLoc, centerLocation, 3963.19);
+								if (distance < 1.0) {
+									newMark.setMap(map);
+								}
 
 								var info = new google.maps.InfoWindow();
 								google.maps.event.addListener(newMark, 'click', function(){
