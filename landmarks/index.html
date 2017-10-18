@@ -81,27 +81,32 @@
 											strokeColor: "#FF0000"
 										}
 									});
+
+									var info = new google.maps.InfoWindow();
+									google.maps.event.addListener(newMark, 'click', function(){
+										info.setContent(this.title + '<br>' + this.distance);
+										info.open(map, this);
+									});			
 								}
 								else {
 									newMark = new google.maps.Marker({
 										position: newLoc,
 										title: data.people[i].login,
-										distance: google.maps.geometry.spherical.computeDistanceBetween(newLoc, centerLocation, 3963.19),
 										icon: {
 											path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
 											scale: 5,
 											strokeWeight: 2,
 											strokeColor: "#0000FF"
 										}
-									});									
+									});	
+
+									var info = new google.maps.InfoWindow();
+									google.maps.event.addListener(newMark, 'click', function(){
+										info.setContent(minName + ": " + minDistance);
+										info.open(map, this);
+									});								
 								}
 								newMark.setMap(map);
-
-								var info = new google.maps.InfoWindow();
-								google.maps.event.addListener(newMark, 'click', function(){
-									info.setContent(this.title + '<br>' + minName + ": " + minDistance);
-									info.open(map, this);
-								});
 
 								var lineCoordinates = [centerLocation, minLocation];
 
