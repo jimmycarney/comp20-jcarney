@@ -14,20 +14,25 @@
 		var centerLocation;
 		var myMark;
 		var info;
+		var minDistance = 9999999;
+		var minLocation;
+		var minName;
 
 		/* gets current location using navigator.geolocation
 		 * creates new instance of XMLHttpRequest
 		 * sends current location and login data to Ming's server
 		 * gets back all data in "request.responseText"
-		 * calls initMap() now that the current location is stored
+		 * parses through data adding each person and landmark to the map
+		 * calls initMap() now that the information is stored
 		 */
 		function sendLocation() {
 			if (navigator.geolocation){
 				navigator.geolocation.getCurrentPosition(function(position) {
+					//store current position of "me"
 					lng = position.coords.longitude;
 					lat = position.coords.latitude;
 					centerLocation = new google.maps.LatLng(lat, lng);
-					/*send info using XMLHttpRequest*/
+					//send current location and login info using XMLHttpRequest
 					var request = new XMLHttpRequest();
 					request.open("POST", "https://defense-in-derpth.herokuapp.com/sendLocation", true);
 					request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -37,9 +42,7 @@
 						if (request.readyState == 4 && request.status == 200) {
 							rawData = request.responseText;
 							data = JSON.parse(rawData);
-							var minDistance = 9999999;
-							var minLocation;
-							var minName;
+							//iterate through all landmarks and add to map
 							for (var i = 0; i < data.landmarks.length; i++) {
 								newLoc = new google.maps.LatLng(data.landmarks[i].geometry.coordinates[1], data.landmarks[i].geometry.coordinates[0]);
 								var markDistance = google.maps.geometry.spherical.computeDistanceBetween(newLoc, centerLocation, 3963.19);
@@ -63,10 +66,13 @@
 
 								var info = new google.maps.InfoWindow();
 								google.maps.event.addListener(newMark, 'click', function(){
-									info.setContent(this.title + '<br>' + this.details);
+									info.setContent(this.details);
 									info.open(map, this);
 								});
 							}
+
+							//iterate through all people and add to map
+							//check if person is "me" by checking login name
 							for (var i = 0; i < data.people.length; i++) {
 								newLoc = new google.maps.LatLng(data.people[i].lat, data.people[i].lng);
 								if (data.people[i].login != login) {
@@ -127,12 +133,7 @@
 			}
 		}
 
-		/* sets centerLocation to be coordinates of current location
-		 * sets mapOptions to certain zoom and centerLocation
-		 * creates a new map
-		 * creates a marker for current location
-		 * creates a new info window and calls initInfo
-		 */
+		//initializes map with map options
 		function initMap() {
 			var mapOptions = {
 				zoom: 14,
