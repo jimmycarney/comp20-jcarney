@@ -102,6 +102,16 @@
 									info.setContent(this.title + '<br>' + minName + ": " + minDistance);
 									info.open(map, this);
 								});
+
+								var lineCoordinates = [centerLocation, minLocation];
+
+								var line = new google.maps.Polyline ({
+									path: lineCoordinates,
+									strokeWeight: 2,
+									strokeColor: "#000000"
+								});
+
+								line.setMap(map);
 							}
 						}
 					};
