@@ -27,7 +27,6 @@
 					lng = position.coords.longitude;
 					lat = position.coords.latitude;
 					centerLocation = new google.maps.LatLng(lat, lng);
-					//initMap();
 					/*send info using XMLHttpRequest*/
 					var request = new XMLHttpRequest();
 					request.open("POST", "https://defense-in-derpth.herokuapp.com/sendLocation", true);
@@ -38,17 +37,42 @@
 						if (request.readyState == 4 && request.status == 200) {
 							rawData = request.responseText;
 							data = JSON.parse(rawData);
+							var minDistance = 9999999;
+							var minLocation;
+							var minName;
+							for (var i = 0; i < data.landmarks.length; i++) {
+								newLoc = new google.maps.LatLng(data.landmarks[i].geometry.coordinates[1], data.landmarks[i].geometry.coordinates[0]);
+								var markDistance = google.maps.geometry.spherical.computeDistanceBetween(newLoc, centerLocation, 3963.19);
+								if (markDistance < minDistance) {
+									minDistance = markDistance;
+									minLocation = newLoc;
+									minName = data.landmarks[i].properties.Location_Name;
+								}
+								newMark = new google.maps.Marker({
+									position: newLoc,
+									title: data.landmarks[i].properties.Location_Name,
+									details: data.landmarks[i].properties.Details,
+									icon: {
+										path: google.maps.SymbolPath.CIRCLE,
+										scale: 7,
+										strokeWeight: 2
+									}
+								});
+
+								newMark.setMap(map);
+
+								var info = new google.maps.InfoWindow();
+								google.maps.event.addListener(newMark, 'click', function(){
+									info.setContent(this.title + '<br>' + this.details);
+									info.open(map, this);
+								});
+							}
 							for (var i = 0; i < data.people.length; i++) {
 								newLoc = new google.maps.LatLng(data.people[i].lat, data.people[i].lng);
-
-								var icon;
-
 								if (data.people[i].login != login) {
 									newMark = new google.maps.Marker({
 										position: newLoc,
 										title: data.people[i].login,
-										latitude: data.people[i].lat,
-										longitude: data.people[i].lng,
 										distance: google.maps.geometry.spherical.computeDistanceBetween(newLoc, centerLocation, 3963.19),
 										icon: {
 											path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
@@ -62,8 +86,6 @@
 									newMark = new google.maps.Marker({
 										position: newLoc,
 										title: data.people[i].login,
-										latitude: data.people[i].lat,
-										longitude: data.people[i].lng,
 										distance: google.maps.geometry.spherical.computeDistanceBetween(newLoc, centerLocation, 3963.19),
 										icon: {
 											path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
@@ -77,31 +99,7 @@
 
 								var info = new google.maps.InfoWindow();
 								google.maps.event.addListener(newMark, 'click', function(){
-									info.setContent(this.title + '<br>' + this.distance);
-									info.open(map, this);
-								});
-							}
-							for (var i = 0; i < data.landmarks.length; i++) {
-								newLoc = new google.maps.LatLng(data.landmarks[i].geometry.coordinates[1], data.landmarks[i].geometry.coordinates[0]);
-								newMark = new google.maps.Marker({
-									position: newLoc,
-									title: data.landmarks[i].properties.Location_Name,
-									latitude: data.landmarks[i].geometry.coordinates[1],
-									longitude: data.landmarks[i].geometry.coordinates[0],
-									details: data.landmarks[i].properties.Details,
-									distance: google.maps.geometry.spherical.computeDistanceBetween(newLoc, centerLocation, 3963.19),
-									icon: {
-										path: google.maps.SymbolPath.CIRCLE,
-										scale: 7,
-										strokeWeight: 2
-									}
-								});
-
-								newMark.setMap(map);
-
-								var info = new google.maps.InfoWindow();
-								google.maps.event.addListener(newMark, 'click', function(){
-									info.setContent(this.title + '<br>' + this.details);
+									info.setContent(this.title + '<br>' + minName + ": " + minDistance);
 									info.open(map, this);
 								});
 							}
@@ -121,28 +119,13 @@
 		 * creates a new info window and calls initInfo
 		 */
 		function initMap() {
-			//centerLocation = new google.maps.LatLng(lat, lng);
 			var mapOptions = {
 				zoom: 14,
 				center: centerLocation
 			};
 			map = new google.maps.Map(document.getElementById("map"), mapOptions);
 			
-			/*myMark = new google.maps.Marker({
-				position: centerLocation,
-				title: login, 
-				latitude: lat,
-				longitude: lng
-			});
-			myMark.setMap(map);
-
-			info = new google.maps.InfoWindow();
-			google.maps.event.addListener(myMark, 'click', initInfo);*/
 		}
-		/*function initInfo(info) {
-			info.setContent(newMark.title);
-			info.open(map, newMark);
-		}*/
 
 	</script>
 </head>
