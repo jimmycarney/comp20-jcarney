@@ -38,8 +38,9 @@
 						if (request.readyState == 4 && request.status == 200) {
 							rawData = request.responseText;
 							data = JSON.parse(rawData);
-							for (var i = 0; i < data.people.length; i ++) {
+							for (var i = 0; i < data.people.length; i++) {
 								newLoc = new google.maps.LatLng(data.people[i].lat, data.people[i].lng);
+
 								newMark = new google.maps.Marker({
 									position: newLoc,
 									title: data.people[i].login,
@@ -52,6 +53,24 @@
 								var info = new google.maps.InfoWindow();
 								google.maps.event.addListener(newMark, 'click', function(){
 									info.setContent(this.title + '<br>' + this.distance);
+									info.open(map, this);
+								});
+							}
+							for (var i = 0; i < data.landmarks.length; i++) {
+								newLoc = new google.maps.LatLng(data.landmarks[i].geometry.coordinates[1], data.landmarks[i].geometry.coordinates[0]);
+								newMark = new google.maps.Marker({
+									position: newLoc,
+									title: data.landmarks[i].properties.Location_Name,
+									latitude: data.landmarks[i].geometry.coordinates[1],
+									longitude: data.landmarks[i].geometry.coordinates[0],
+									details: data.landmarks[i].properties.Details,
+									distance: google.maps.geometry.spherical.computeDistanceBetween(newLoc, centerLocation, 3963.19)
+								});
+								newMark.setMap(map);
+
+								var info = new google.maps.InfoWindow();
+								google.maps.event.addListener(newMark, 'click', function(){
+									info.setContent(this.title + '<br>' + this.details);
 									info.open(map, this);
 								});
 							}
