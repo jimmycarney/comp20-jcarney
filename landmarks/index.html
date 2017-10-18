@@ -41,13 +41,38 @@
 							for (var i = 0; i < data.people.length; i++) {
 								newLoc = new google.maps.LatLng(data.people[i].lat, data.people[i].lng);
 
-								newMark = new google.maps.Marker({
-									position: newLoc,
-									title: data.people[i].login,
-									latitude: data.people[i].lat,
-									longitude: data.people[i].lng,
-									distance: google.maps.geometry.spherical.computeDistanceBetween(newLoc, centerLocation, 3963.19)
-								});
+								var icon;
+
+								if (data.people[i].login != login) {
+									newMark = new google.maps.Marker({
+										position: newLoc,
+										title: data.people[i].login,
+										latitude: data.people[i].lat,
+										longitude: data.people[i].lng,
+										distance: google.maps.geometry.spherical.computeDistanceBetween(newLoc, centerLocation, 3963.19),
+										icon: {
+											path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+											scale: 5,
+											strokeWeight: 2,
+											strokeColor: "#FF0000"
+										}
+									});
+								}
+								else {
+									newMark = new google.maps.Marker({
+										position: newLoc,
+										title: data.people[i].login,
+										latitude: data.people[i].lat,
+										longitude: data.people[i].lng,
+										distance: google.maps.geometry.spherical.computeDistanceBetween(newLoc, centerLocation, 3963.19),
+										icon: {
+											path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+											scale: 5,
+											strokeWeight: 2,
+											strokeColor: "#0000FF"
+										}
+									});									
+								}
 								newMark.setMap(map);
 
 								var info = new google.maps.InfoWindow();
@@ -64,13 +89,15 @@
 									latitude: data.landmarks[i].geometry.coordinates[1],
 									longitude: data.landmarks[i].geometry.coordinates[0],
 									details: data.landmarks[i].properties.Details,
-									distance: google.maps.geometry.spherical.computeDistanceBetween(newLoc, centerLocation, 3963.19)
+									distance: google.maps.geometry.spherical.computeDistanceBetween(newLoc, centerLocation, 3963.19),
+									icon: {
+										path: google.maps.SymbolPath.CIRCLE,
+										scale: 7,
+										strokeWeight: 2
+									}
 								});
-								
-								var distance = google.maps.geometry.spherical.computeDistanceBetween(newLoc, centerLocation, 3963.19);
-								if (distance < 1.0) {
-									newMark.setMap(map);
-								}
+
+								newMark.setMap(map);
 
 								var info = new google.maps.InfoWindow();
 								google.maps.event.addListener(newMark, 'click', function(){
