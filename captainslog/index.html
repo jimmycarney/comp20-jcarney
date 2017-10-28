@@ -10,7 +10,7 @@
     <script>
         $(document).ready(function(){
             for (var i = 0; i < localStorage.length; i++) {
-                $("#log").append("<p>" + localStorage.getItem(localStorage.key(i)) + "</p>");
+                $("#log").prepend("<p>" + localStorage.getItem(localStorage.key(i)) + "</p>");
             }         
         });
         $(document).keypress(function(key){
@@ -18,7 +18,7 @@
                 var text = document.getElementById("msg").value;
                 var date = new Date();
                 localStorage.setItem(date, date + " - " + text);
-                $("#log").append("<p>" + localStorage.getItem(date) + "</p>");
+                $("#log").prepend("<p>" + localStorage.getItem(date) + "</p>");
             }
         });
     </script>
