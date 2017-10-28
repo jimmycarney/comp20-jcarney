@@ -8,7 +8,12 @@
     <link rel="stylesheet" href="style.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
-        // Your work will be done here...
+        $(document).keypress(function(key){
+            if(key.which == 13){
+                var text = document.getElementById('msg').value;
+                alert(text);
+            }
+        });
     </script>
 </head>
 
