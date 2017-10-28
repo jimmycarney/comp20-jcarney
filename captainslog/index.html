@@ -17,8 +17,8 @@
             if(key.which == 13){
                 var text = document.getElementById("msg").value;
                 var date = new Date();
-                localStorage.setItem(date + text, date + " - " + text);
-                $("#log").prepend("<p>" + localStorage.getItem(date) + "</p>");
+                localStorage.setItem(date.getTime(), date + " - " + text);
+                $("#log").prepend("<p>" + localStorage.getItem(date.getTime()) + "</p>");
             }
         });
     </script>
