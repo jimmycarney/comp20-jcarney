@@ -9,9 +9,22 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script>
         $(document).ready(function(){
+            var sorted = new Array();
             for (var i = 0; i < localStorage.length; i++) {
-                $("#log").prepend("<p>" + localStorage.getItem(localStorage.key(i)) + "</p>");
+                sorted[i] = localStorage.getItem(localStorage.key(i));
+            }    
+            for (var i = 0; i < (localStorage.length - 1); i++) {
+                for (var j = i; j < localStorage.length; j++) {
+                    if (sorted[j] < sorted[i]) {
+                        var temp = sorted[j];
+                        sorted[j] = sorted[i];
+                        sorted[i] = temp;
+                    }
+                }
             }         
+            for (var i = 0; i < sorted.length; i++) {
+                $("#log").prepend("<p>" + sorted[i] + "</p>");
+            }  
         });
         $(document).keypress(function(key){
             if(key.which == 13){
