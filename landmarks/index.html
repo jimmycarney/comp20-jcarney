@@ -34,7 +34,7 @@
 					centerLocation = new google.maps.LatLng(lat, lng);
 					//send current location and login info using XMLHttpRequest
 					var request = new XMLHttpRequest();
-					request.open("POST", "https://defense-in-derpth.herokuapp.com/sendLocation", true);
+					request.open("POST", "https://salty-brook-32366.herokuapp.com/sendLocation", true);
 					request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 					request.onreadystatechange = function() {
 						//will only run once and if the status code indicates successful
