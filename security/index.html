@@ -14,6 +14,7 @@
     <h3>Methodology</h3>
     <h3>Abstract of Findings</h3>
     <h3>Issues Found</h3>
+    <div class="issues">
         <h4>Issue #1</h4>
             <ul>
                 <li>Issue: javascript injection</li>
@@ -24,7 +25,7 @@
                 <li>Proof: This data entry was added to the checkins collection (screenshot from mLab). This results in the redirection to the google homepage.</li>
                 <img alt="issue #1 proof" src="injecteddoc.png" />
                 <li>Resolution: Add code to remove special characters from the login string so that no one can inject any script tags (see code below)</li>
-                <h5>login = login.replace(/[^\w\s]/gi, '');</h5>
+                <p>login = login.replace(/[^\w\s]/gi, '');</p>
             </ul>
         <h4>Issue #2</h4>
             <ul>
@@ -32,7 +33,7 @@
                 <li>Location: /checkins.json page</li>
                 <li>Severity: High- someone can get all of the data that they should not have access to</li>
                 <li>Description: I found the problem by using the following query string:</li>
-                <h5>https://pure-eyrie-46995.herokuapp.com/checkins.json?login[$ne]=58ijDq5h</h5>
+                <p>https://pure-eyrie-46995.herokuapp.com/checkins.json?login[$ne]=58ijDq5h</p>
                 <p>This returns all of the data for the logins that are not the one that is being passed into the query string</p>
                 <li>Proof: See photo below</li>
                 <img alt="issue #2 proof" src="issue2proof.png" />
@@ -52,6 +53,7 @@
                 <li>Proof: </li>
                 <li>Resolution: </li>
             </ul>
+    </div>
     <h3>Conclusion</h3>
     <h3>References</h3>
 </body>
