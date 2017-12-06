@@ -9,53 +9,63 @@
 </head>
 
 <body>
-    <h1>Assignment 4</h1>
-    <h3>Introduction</h3>
-    <h3>Methodology</h3>
-    <h3>Abstract of Findings</h3>
-    <h3>Issues Found</h3>
     <div class="issues">
-        <h4>Issue #1</h4>
+        <h1>Assignment 4</h1>
+        <h3>Introduction</h3>
+            <p></p>
+        <h3>Methodology</h3>
+            <p></p>
+        <h3>Abstract of Findings</h3>
+            <p>The first issue that I found is that the /sendLocation page does not check the user input for non-alphanumeric characters before entering it into the database. This means that someone could pass in code, as the login for example, that will run on another person's web browser when they are sent data from the server. The second problem is that there is also no check for special characters in the part of the url following the question mark. On the /checkins.json page, someone can manipulate this part of the url so that they receive all of the information about every user except for themselves, and this is a big security issue. The third issue is similar to the first issue in that the data that is retrieved from the server is not stripped of special characters before it is sent to a user. This means that if someone put data into the database that contains code, that code can run on another person's web browser when they receive that data.</p>
+        <h3>Issues Found</h3>
+            <h4>Issue #1</h4>
+                <ul>
+                    <li>Issue: (CWE-79) Cross-site Scripting</li>
+                    <li>Location: javascript injected on /sendLocation page</li>
+                    <li>Severity: High- anyone can put whatever javascript they want to be executed</li>
+                    <li>Description: When this command (see below) was executed in the terminal, a data entry containing that javascript was added to the checkins collection. Now, when one tries to access the main app page, they are redirected to the google homepage.</li>
+                    <img alt="issue #1 description" src="curlinject.png" />
+                    <li>Proof: This data entry was added to the checkins collection (screenshot from mLab). This results in the redirection to the google homepage.</li>
+                    <img alt="issue #1 proof" src="injecteddoc.png" />
+                    <li>Resolution: Add code to remove special characters from the login string so that no one can inject any script tags (see code below)</li>
+                    <p>login = login.replace(/[^\w\s]/gi, '');</p>
+                </ul>
+            <h4>Issue #2</h4>
+                <ul>
+                    <li>Issue: (CWE-943) Improper Neutralization of Special Elements in Data Query Logic</li>
+                    <li>Location: mongo injection on /checkins.json page</li>
+                    <li>Severity: High- someone can get all of the data that they should not have access to</li>
+                    <li>Description: I found the problem by using the following query string:</li>
+                    <p>https://pure-eyrie-46995.herokuapp.com/checkins.json?login[$ne]=58ijDq5h</p>
+                    <p>This returns all of the data for the logins that are not the one that is being passed into the query string</p>
+                    <li>Proof: See photo below</li>
+                    <img alt="issue #2 proof" src="issue2proof.png" />
+                    <li>Resolution: Utilize the mongo-sanitize tool to not allow request keys that begin with ‘$’</li>
+                    <p>var sanitize = require('mongo-sanitize');</p>
+                    <p>// The sanitize function will strip out any keys that start with '$' in the input,</p>
+                    <p>// so you can pass it to MongoDB without worrying about malicious users overwriting</p>
+                    <p>// query selectors.</p>
+                    <p>var clean = sanitize(req.params.username);</p>
+                </ul>
+            <h4>Issue #3</h4>
+                <ul>
+                    <li>Issue: (CWE-80) Improper Neutralization of Script-Related HTML Tags in a Web Page</li>
+                    <li>Location: in /checkins.json code results from the database are sent without validation</li>
+                    <li>Severity: High- someone could put data with javascript in the database, and it would be sent to the user and run on their browser</li>
+                    <li>Description: I found it by looking at the code for the /checkins.json page. The results from the find query are never validated before they are sent from server.</li>
+                    <li>Proof: See photo below</li>
+                    <img alt="issue #3 proof" src="baddata.png" />
+                    <li>Resolution: Add code to remove special characters from each of the results (See resolution for Issue #1 for an example of code that can remove special characters)</li>
+                </ul>
+        <h3>Conclusion</h3>
+            <p></p>
+        <h3>References</h3>
             <ul>
-                <li>Issue: (CWE-79) Cross-site Scripting</li>
-                <li>Location: javascript injected on /sendLocation page</li>
-                <li>Severity: High- anyone can put whatever javascript they want to be executed</li>
-                <li>Description: When this command (see below) was executed in the terminal, a data entry containing that javascript was added to the checkins collection. Now, when one tries to access the main app page, they are redirected to the google homepage.</li>
-                <img alt="issue #1 description" src="curlinject.png" />
-                <li>Proof: This data entry was added to the checkins collection (screenshot from mLab). This results in the redirection to the google homepage.</li>
-                <img alt="issue #1 proof" src="injecteddoc.png" />
-                <li>Resolution: Add code to remove special characters from the login string so that no one can inject any script tags (see code below)</li>
-                <p>login = login.replace(/[^\w\s]/gi, '');</p>
-            </ul>
-        <h4>Issue #2</h4>
-            <ul>
-                <li>Issue: (CWE-943) Improper Neutralization of Special Elements in Data Query Logic</li>
-                <li>Location: mongo injection on /checkins.json page</li>
-                <li>Severity: High- someone can get all of the data that they should not have access to</li>
-                <li>Description: I found the problem by using the following query string:</li>
-                <p>https://pure-eyrie-46995.herokuapp.com/checkins.json?login[$ne]=58ijDq5h</p>
-                <p>This returns all of the data for the logins that are not the one that is being passed into the query string</p>
-                <li>Proof: See photo below</li>
-                <img alt="issue #2 proof" src="issue2proof.png" />
-                <li>Resolution: Utilize the mongo-sanitize tool to not allow request keys that begin with ‘$’</li>
-                <p>var sanitize = require('mongo-sanitize');</p>
-                <p>// The sanitize function will strip out any keys that start with '$' in the input,</p>
-                <p>// so you can pass it to MongoDB without worrying about malicious users overwriting</p>
-                <p>// query selectors.</p>
-                <p>var clean = sanitize(req.params.username);</p>
-            </ul>
-        <h4>Issue #3</h4>
-            <ul>
-                <li>Issue: (CWE-80) Improper Neutralization of Script-Related HTML Tags in a Web Page</li>
-                <li>Location: in /checkins.json code results from the database are sent without validation</li>
-                <li>Severity: High- someone could put data with javascript in the database, and it would be sent to the user and run on their browser</li>
-                <li>Description: I found it by looking at the code for the /checkins.json page. The results from the find query are never validated before they are sent from server.</li>
-                <li>Proof: See photo below</li>
-                <img alt="issue #3 proof" src="baddata.png" />
-                <li>Resolution: Add code to remove special characters from each of the results (See resolution for Issue #1 for an example of code that can remove special characters)</li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
             </ul>
     </div>
-    <h3>Conclusion</h3>
-    <h3>References</h3>
 </body>
 </html>
