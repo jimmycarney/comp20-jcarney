@@ -12,9 +12,9 @@
     <div class="issues">
         <h1>Assignment 4</h1>
         <h3>Introduction</h3>
-            <p></p>
+            <p>The product that I was testing was a Node.js and Express web application linked to a MongoDB database. The web application stores information regarding different users' longitudes and latitudes and the longitudes and latitudes of various historical landmarks. The web application can also send some of this information to a client, and a client can send information to be stored in the data base. My job was to find at least three security issues in this application.</p>
         <h3>Methodology</h3>
-            <p></p>
+            <p>My methods for finding these security risks were actually quite simple. After learning about Cross-site scripting, particularly javascript injection, and mangling query strings, particularly with mongo injection, I tried those two attacks on this app, and they both worked. Then I thought that since the app code did not remove special characters before entering data into the database, it probably does not remove special characters from database results before sending them to a client.</p>
         <h3>Abstract of Findings</h3>
             <p>The first issue that I found is that the /sendLocation page does not check the user input for non-alphanumeric characters before entering it into the database. This means that someone could pass in code, as the login for example, that will run on another person's web browser when they are sent data from the server. The second problem is that there is also no check for special characters in the part of the url following the question mark. On the /checkins.json page, someone can manipulate this part of the url so that they receive all of the information about every user except for themselves, and this is a big security issue. The third issue is similar to the first issue in that the data that is retrieved from the server is not stripped of special characters before it is sent to a user. This means that if someone put data into the database that contains code, that code can run on another person's web browser when they receive that data.</p>
         <h3>Issues Found</h3>
