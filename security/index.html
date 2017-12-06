@@ -40,7 +40,7 @@
                     <p>This returns all of the data for the logins that are not the one that is being passed into the query string</p>
                     <li>Proof: See photo below</li>
                     <img alt="issue #2 proof" src="issue2proof.png" />
-                    <li>Resolution: Utilize the mongo-sanitize tool to not allow request keys that begin with ‘$’</li>
+                    <li>Resolution: Utilize the mongo-sanitize tool to not allow request keys that begin with ‘$’ (See code below from mongo-sanitize documentation)</li>
                     <p>var sanitize = require('mongo-sanitize');</p>
                     <p>// The sanitize function will strip out any keys that start with '$' in the input,</p>
                     <p>// so you can pass it to MongoDB without worrying about malicious users overwriting</p>
@@ -61,10 +61,11 @@
             <p></p>
         <h3>References</h3>
             <ul>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
+                <li>https://www.npmjs.com/package/mongo-sanitize</li>
+                <li>https://dzone.com/articles/mongodb-preventing-common-vulnerabilities-in-the-m</li>
+                <li>https://cwe.mitre.org/data/definitions/79.html</li>
+                <li>https://cwe.mitre.org/data/definitions/80.html</li>
+                <li>https://cwe.mitre.org/data/definitions/943.html</li>
             </ul>
     </div>
 </body>
