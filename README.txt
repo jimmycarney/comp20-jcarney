@@ -24,7 +24,19 @@ advanced web pages, but it also helped me to gain a much greater
 understanding of how websites really function.
 
 What was the most important thing that you learned in this course? Cite two examples as evidence.
-
+One of the most important things that I learned in this course is how
+the web actually works. Through the combination of Assignments 2 and 3, I was 
+able to see and learn about both sides of web programming. And I was required to 
+have a good understanding of HTTP requests and responses in order to complete
+those assignments. Part of this understanding how the web works was learning 
+basic web security for the first time. Doing Assignment 4 made me realize how 
+vulnerable any web page I've ever built is to being taken advantage of. The 
+security part of this course helped me to understand how important security is, 
+and I now know some practices for creating a more secure web page. 
 
 Now that you have finished the course, what topic would you like to delve deeper into?
-
+I would like to delve even deeper into the topic of security. I was really
+interested when we were learning the different types of attacks and ways
+to defend against them. I would like to move beyond the basics and learn how
+to defend against more advanced attacks so that any web page I build is as 
+secure as possible.
